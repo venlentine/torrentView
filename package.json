@@ -1,21 +1,20 @@
 {
-    "id":"epubReader",
-    "name":"{{LNG.epubReader.meta.title}}",
-    "title":"",
-    "version":"1.2",
+    "id":"torrentView",
+    "name":"TorrentView",
+    "title":"TorrentView",
+    "version":"1.0",
     "source":{
-        "icon":"{{pluginHost}}/static/app/images/icon.png",
+        "icon":"{{pluginHost}}/static/images/icon.png",
         "screenshoot":[
-            "{{pluginHost}}static/app/images/screenshot1.png",
-            "{{pluginHost}}static/app/images/screenshot2.png"
+            "{{pluginHost}}/static//images/icon.png"
         ]
     },
     "category":"tools,file",
-    "description":"{{LNG.epubReader.meta.desc}}",
+    "description":"TorrentView",
     "keywords":"",
     "auther":{
-        "copyright":"kodcloud.",
-        "homePage":"http://www.kodcloud.com",
+        "copyright":"venlentine",
+        "homePage":"http://www.fightfly.com",
     },
     "configItem":{
         "pluginAuth":{
@@ -39,7 +38,7 @@
             "type":"tags",
             "display":"{{LNG.Plugin.Config.fileExt}}",
             "desc":"{{LNG.Plugin.Config.fileExtDesc}}",
-            "value":"epub",
+            "value":"torrent",
         },
         "fileSort":{
             "type":"number",
