@@ -1,0 +1,2 @@
+# torrentView
+KODExplorer Plugins
