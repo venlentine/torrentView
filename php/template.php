@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="<?php echo STATIC_PATH;?>style/skin/base/app_explorer.css?ver=<?php echo KOD_VERSION;?>"/>
 	<title><?php echo $fileName;?></title>
 	<style type="text/css">
+	html{overflow:auto;}
 	.pathinfo{width: 100%;}
 	.pathinfo .p .title {width: 100px;font-weight: bold;}
 	.pathinfo .p .content {width: 80%;}
