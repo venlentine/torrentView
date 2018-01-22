@@ -26,22 +26,26 @@ class torrentViewPlugin extends PluginBase{
     private function torrent_info($path){
         $data = [];
         $torrent = new Torrent($path);
-        //var_dump($torrent->encoding());die;
-        $data['private'] = $torrent->is_private() ? 'yes' : 'no';
-        $data['name'] = $this->torrent_encoding($torrent->name(), $torrent->encoding());
-        $data['publisher'] = $this->torrent_encoding($torrent->publisher(), $torrent->encoding());
-        $data['date'] = date('Y-m-d H:i:s', $torrent->creation_date());
-        $data['announce'] = $this->torrent_announce($torrent->announce());
-        $data['piece_length'] = Torrent::format($torrent->piece_length());
-        $data['size'] = $torrent->size( 2 );
-        $data['hash_info'] = $torrent->hash_info();
-        $data['comment'] = $this->torrent_encoding($torrent->comment(), $torrent->encoding());
-        //$data['stats'] = $torrent->scrape();//耗时
-        $data['files'] = [];
+        //文件
+        $file_arr = [];
         $files = $this->torrent_files($torrent->name(), $torrent->content(), $torrent->encoding());
         foreach ($files as $key => $value) {
-            $data['files'][] = ["name" =>$value['name'], "size" => $value['size']];
+            $file_arr[] = ["name" =>$value['name'], "size" => $value['size']];
         }
+        //var_dump($torrent->encoding());die;
+        $data[] = ["id"=>"private", "title"=>"Private", "value"=>$torrent->is_private() ? 'yes' : 'no'];
+        $data[] = ["id"=>"name", "title"=>"种子名称", "value"=>$this->torrent_encoding($torrent->name(), $torrent->encoding())];
+        $data[] = ["id"=>"hash", "title"=>"种子哈希", "value"=>$torrent->hash_info()];
+        $data[] = ["id"=>"number", "title"=>"文件数目", "value"=>count($file_arr)];
+        $data[] = ["id"=>"size", "title"=>"文件大小", "value"=>$torrent->size( 2 )];
+        $data[] = ["id"=>"piece", "title"=>"分块大小", "value"=>Torrent::format($torrent->piece_length())];
+        $data[] = ["id"=>"date", "title"=>"发布时间", "value"=>date('Y-m-d H:i:s', $torrent->creation_date())];
+        $data[] = ["id"=>"publisher", "title"=>"发布人员", "value"=>$this->torrent_encoding($torrent->publisher(), $torrent->encoding())];
+        $data[] = ["id"=>"comment", "title"=>"描述内容", "value"=>$this->torrent_encoding($torrent->comment(), $torrent->encoding())];
+        $data['announce'] = ["id"=>"date", "title"=>"服务器链", "value"=>$this->torrent_announce($torrent->announce())];
+        $data[] = ["id"=>"files", "title"=>"文件列表", "value"=>$file_arr];
+        //$data['stats'] = $torrent->scrape();//耗时
+
         //var_dump($data);die;
         return $data;
     }
