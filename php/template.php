@@ -6,6 +6,8 @@
 	<title><?php echo $fileName;?></title>
 	<style type="text/css">
 	html{overflow:auto;}
+	a{color:red;}
+	ol{margin: 0;padding: 0 0 0 15px;}
 	.pathinfo{width: 100%;}
 	.pathinfo .p .title {width: 100px;font-weight: bold;}
 	.pathinfo .p .content {width: 80%;}
@@ -13,16 +15,16 @@
 </head>
 <body>
 <div class="pathinfo">
-	<?php foreach ($data as $key => $data) {?>
+	<?php foreach ($data as $key => $resp) {?>
 	<div class="p">
-		<div class="title"><?=$data->title?>:</div>
+		<div class="title"><?=$resp['title']?>:</div>
 		<div class="content">
 			<?php
-			if (!is_array($data->value)) {
-				echo $data->value;
+			if (!is_array($resp['value'])) {
+				echo $resp['value'];
 			}else{
 				echo "<ol>";
-				foreach ($data->value as $value) {
+				foreach ($resp['value'] as $value) {
 					echo "<li>".$value["name"]. " <small>(" .$value["size"].")</small></li>";
 				}
 				echo "</ol>";
@@ -33,5 +35,34 @@
 	</div>
 	<?php }?>
 </div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->pluginHost;?>static/jquery.zclip.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("ol").each(function(){
+    var olhandle = $(this);
+    var max=10;//设置最多显示li
+    var linum = olhandle.find("li");
+    var hidden;
+    if(linum.length > max){
+    	hidden = olhandle.find("li:eq(" + max + ")").nextAll().clone();
+    	olhandle.find("li:eq(" + max + ")").nextAll().remove();
+      olhandle.append("<li><a href='###'>点击展开</a></li>");
+    };
+    $(this).find("a").click(function(){
+    	olhandle.find("li:last").remove();
+      olhandle.append(hidden);
+    })
+  });
+  $(".btnCopy").zclip({
+  	path: "<?php echo $this->pluginHost;?>static/ZeroClipboard.swf",
+    copy: function(){
+   		return $(this).attr("data-url");
+　　	},
+		afterCopy: function(){
+		}
+  });
+});
+</script>
 </body>
 </html>

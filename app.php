@@ -36,6 +36,11 @@ class torrentViewPlugin extends PluginBase{
         $data[] = ["id"=>"private", "title"=>"Private", "value"=>$torrent->is_private() ? 'yes' : 'no'];
         $data[] = ["id"=>"name", "title"=>"种子名称", "value"=>$this->torrent_encoding($torrent->name(), $torrent->encoding())];
         $data[] = ["id"=>"hash", "title"=>"种子哈希", "value"=>$torrent->hash_info()];
+
+        $magnet = $torrent->magnet( false );
+        $magnet = substr($magnet, 0, stripos($magnet, "xl="));
+        $magnet = '<a href="javascript:;" data-url="'.$magnet.'" class="btnCopy">点击复制</a>';
+        $data[] = ["id"=>"magnet", "title"=>"磁力链接", "value"=>$magnet];
         $data[] = ["id"=>"number", "title"=>"文件数目", "value"=>count($file_arr)];
         $data[] = ["id"=>"size", "title"=>"文件大小", "value"=>$torrent->size( 2 )];
         $data[] = ["id"=>"piece", "title"=>"分块大小", "value"=>Torrent::format($torrent->piece_length())];
@@ -45,7 +50,6 @@ class torrentViewPlugin extends PluginBase{
         $data['announce'] = ["id"=>"date", "title"=>"服务器链", "value"=>$this->torrent_announce($torrent->announce())];
         $data[] = ["id"=>"files", "title"=>"文件列表", "value"=>$file_arr];
         //$data['stats'] = $torrent->scrape();//耗时
-
         //var_dump($data);die;
         return $data;
     }
@@ -75,7 +79,7 @@ class torrentViewPlugin extends PluginBase{
         $arr = [];
         foreach ($content as $key => $value) {
             if(!stristr($key, 'BitComet')){
-                $key = str_replace($name."\\", "", $key);
+                $key = str_replace($name.DIRECTORY_SEPARATOR, "", $key);
                 $key = $this->torrent_encoding($key, $encoding);
                 $arr[] = ['name' => $key, 'size' => Torrent::format($value)];
             }
